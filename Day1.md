@@ -120,16 +120,7 @@ Integer.compare(10, 20);
 Integer.MAX_VALUE;
 ```
 
-**3. Autoboxing and unboxing**
-
-Since Java 5, the compiler automatically converts between primitives and their wrappers:
-
-```java
-Integer i = 10;       // autoboxing: int -> Integer
-int j = i;             // unboxing: Integer -> int
-```
-
-**4. Nullability**
+**3. Nullability**
 
 Primitives can never be `null`, but wrapper types can — useful when a value may be "absent" (e.g., optional fields, database results):
 
@@ -176,19 +167,17 @@ int x = obj.intValue();
 
 ---
 
-## Interview Question: What is the difference between `Integer.valueOf()` and `new Integer()`?
+## Interview Question: `Integer.valueOf()` vs `new Integer()`
 
-Modern Java code should use:
+Modern Java code should always prefer:
 
 ```java
 Integer x = Integer.valueOf(10);
 ```
 
-rather than explicitly creating wrapper objects.
+over directly instantiating a wrapper object with `new Integer(10)`. In fact, the `Integer(int)` constructor (and equivalents for other wrapper classes) has been **deprecated since Java 9**, specifically because it bypasses caching and creates unnecessary objects.
 
-`valueOf()` can reuse cached wrapper objects where applicable.
-
-Also, constructors such as `new Integer(int)` have been deprecated.
+`valueOf()` is preferred because it can return a **cached, shared instance** for frequently used values instead of allocating a new object every time — which is both faster and more memory-efficient.
 
 ---
 
@@ -197,47 +186,23 @@ Also, constructors such as `new Integer(int)` have been deprecated.
 ```java
 Integer a = 100;
 Integer b = 100;
-
-System.out.println(a == b);
+System.out.println(a == b); // true
 ```
-
-Output:
-
-```text
-true
-```
-
-But:
 
 ```java
 Integer a = 200;
 Integer b = 200;
-
-System.out.println(a == b);
+System.out.println(a == b); // false (typically)
 ```
 
-Typically:
+**Why this happens:**
+When you write `Integer a = 100;`, autoboxing kicks in and it's compiled as `Integer.valueOf(100)`. The JVM maintains an internal cache of `Integer` objects for the range **-128 to 127**, as mandated by the Java specification. Values within that range reuse the same cached object, so `==` (which compares references, not values) returns `true`. Values outside that range get a freshly allocated object each time, so `==` returns `false`.
 
-```text
-false
-```
-
-Why?
-
-Autoboxing uses `Integer.valueOf()`, and Java caches commonly used `Integer` instances, including the range `-128` to `127` as required by the Java specification.
-
-Therefore:
+**The safe fix:**
+Never rely on `==` for wrapper object comparison — always use `.equals()` to compare values:
 
 ```java
-== 
-```
-
-compares the references, not the integer values.
-
-For value comparison:
-
-```java
-a.equals(b)
+a.equals(b) // true, regardless of the value
 ```
 
 ---
