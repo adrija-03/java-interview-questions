@@ -348,6 +348,8 @@ The `String` class is also `final`, preventing subclasses from changing its beha
 
 # 6. StringBuilder vs StringBuffer
 
+`String` in Java is **immutable** — every modification creates a new object instead of changing the original. Repeated concatenation (e.g., in a loop) therefore creates unnecessary garbage and hurts performance. `StringBuilder` and `StringBuffer` solve this by providing a **mutable** character sequence that can be changed in place.
+
 Both classes are used for mutable sequences of characters.
 
 ### StringBuilder
@@ -396,6 +398,31 @@ Advantages:
 Because `StringBuffer` synchronizes its methods, introducing synchronization overhead.
 
 For normal single-threaded code, `StringBuilder` is generally preferred.
+
+### Comparison
+
+| Feature | `StringBuilder` | `StringBuffer` |
+| --- | --- | --- |
+| Mutability | Mutable | Mutable |
+| Thread-safety | Not synchronized | Synchronized (thread-safe) |
+| Performance | Faster | Slower (due to sync overhead) |
+| Introduced in | Java 5 | Java 1.0 |
+| Use case | Single-threaded code | Multi-threaded code sharing the same instance |
+
+### When to use which
+
+- **`StringBuilder`** — default choice for almost all code. Faster since it skips synchronization, and most string-building doesn't need thread safety.
+- **`StringBuffer`** — only when multiple threads need to modify the **same instance** concurrently. Rare in practice; usually better to build strings per-thread and merge results afterward.
+
+### Example
+
+```java
+StringBuilder sb = new StringBuilder();
+sb.append("Hello");
+sb.append(" World");
+System.out.println(sb.toString()); // Hello World
+```
+
 
 ---
 
