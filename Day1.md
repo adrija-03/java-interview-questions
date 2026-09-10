@@ -49,27 +49,33 @@ int[] numbers = {1, 2, 3};
 
 **Answer:**
 
-It depends on where the variable is declared.
+It depends on **where the variable is declared**, not on the fact that it's a primitive.
 
+**1. Local variables → Stack**
 ```java
 void test() {
-    int x = 10;
+    int x = 10; // stored in the stack frame of test()
 }
 ```
+`x` exists only within the method's stack frame and is destroyed once the method returns.
 
-Here, `x` is a local variable associated with the current stack frame.
-
-However:
-
+**2. Instance fields → Heap**
 ```java
 class Employee {
     int age;
 }
 ```
+When an `Employee` object is created, `age` becomes part of that object, so it lives on the **heap** along with the rest of the object.
 
-If an `Employee` object is created, its instance field `age` is part of the object stored in the heap.
+**3. Static fields → Method Area (Metaspace in modern JVMs)**
+```java
+class Employee {
+    static int count;
+}
+```
+Static variables belong to the class, not any instance, so they live in the **method area** (Metaspace, post Java 8), separate from both stack and heap.
 
-So, avoid saying **"all primitives are stored on the stack."** The storage location depends on the context.
+**Key takeaway:** Don't say "primitives are stored on the stack." The correct answer is: *local primitives live on the stack, primitives that are part of an object live on the heap, and primitives declared static live in the method area.*
 
 ---
 
