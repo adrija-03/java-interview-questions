@@ -96,23 +96,46 @@ Java provides wrapper classes that represent primitive values as objects.
 
 ### Why do we need wrapper classes?
 
-Because Java's collection framework works with objects:
+**1. Collections work with objects, not primitives**
+
+Java's collection framework requires objects:
 
 ```java
 List<Integer> numbers = new ArrayList<>();
 ```
 
-You cannot use:
+You cannot use a primitive type directly:
 
 ```java
 List<int> numbers; // Invalid
 ```
 
-Wrapper classes also provide utility methods such as:
+**2. Utility methods**
+
+Wrapper classes provide useful static methods that primitives don't have:
 
 ```java
 Integer.parseInt("100");
 Integer.compare(10, 20);
+Integer.MAX_VALUE;
+```
+
+**3. Autoboxing and unboxing**
+
+Since Java 5, the compiler automatically converts between primitives and their wrappers:
+
+```java
+Integer i = 10;       // autoboxing: int -> Integer
+int j = i;             // unboxing: Integer -> int
+```
+
+**4. Nullability**
+
+Primitives can never be `null`, but wrapper types can — useful when a value may be "absent" (e.g., optional fields, database results):
+
+```java
+Integer score = null; // valid
+int score = null;      // compile error
 ```
 
 ---
