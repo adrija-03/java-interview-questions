@@ -1,6 +1,6 @@
 package Implementation;
 
-public class BankAccount {
+public class BankAccount implements Account{
     private String accountHolder;
     private double balance;
 
@@ -17,10 +17,12 @@ public class BankAccount {
         return accountHolder;
     }
 
+    @Override 
     public double getBalance() {
         return balance;
     }
 
+    @Override 
     public void deposit(double amount) {
         if(amount > 0) {
             this.balance += amount;
@@ -30,6 +32,7 @@ public class BankAccount {
         }
     }
 
+    @Override 
     public void withdraw(double amount) {
         if(amount > 0 && amount <= this.balance) {
             this.balance -= amount;
