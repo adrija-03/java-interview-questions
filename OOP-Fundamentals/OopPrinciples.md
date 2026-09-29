@@ -34,7 +34,7 @@ The key idea is:
 
 ## Definition
 
-> **Encapsulation is the process of bundling data and the methods that operate on that data into a single unit, while restricting direct access to the internal state of the object.**
+> **Encapsulation is the process of wrapping data and the methods into a single unit, while restricting direct access to the internal state of the object.**
 
 In Java, encapsulation is commonly achieved using:
 
